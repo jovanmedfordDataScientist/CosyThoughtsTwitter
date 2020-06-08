@@ -25,8 +25,9 @@ def convert_html_to_soup(filename):
 class Quote:
     def __init__(self,quote_block):
         self._text = None
+        self._author = None
         self.quote_block = quote_block
-
+        
     @property
     def text(self):   
         dirty_quote = self.quote_block.text
@@ -36,9 +37,16 @@ class Quote:
         else:
             text = dirty_quote
         return text
-        
-'''
+
+    @property
+    def author(self):
+       dirty_author = self.quote_block.span.text
+       return dirty_author.replace('\n','').strip(' ')
+
+
+
 souped = convert_html_to_soup('goodreads_love.html')
+'''
 quote_block = souped.findAll(attrs={"class": "quoteText"})[0]
 quote = re.findall(r'“(.*?)”', quote_block.text)[0]
 dirty_author = quote_block.span.text
