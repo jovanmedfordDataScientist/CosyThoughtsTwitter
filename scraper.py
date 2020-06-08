@@ -22,12 +22,26 @@ def convert_html_to_soup(filename):
         soup = BeautifulSoup(file, features="html.parser")
     return soup
 
+class Quote:
+    def __init__(self,quote_block):
+        self._text = None
+        self.quote_block = quote_block
 
-
+    @property
+    def text(self):   
+        dirty_quote = self.quote_block.text
+        match = re.search(r'“(.*?)”', dirty_quote)
+        if (match):
+            text = match.group(0).replace('“',"").replace('”',"")
+        else:
+            text = dirty_quote
+        return text
+        
+'''
 souped = convert_html_to_soup('goodreads_love.html')
 quote_block = souped.findAll(attrs={"class": "quoteText"})[0]
 quote = re.findall(r'“(.*?)”', quote_block.text)[0]
 dirty_author = quote_block.span.text
 author = dirty_author.replace('\n','').strip(' ')
 
-
+'''
