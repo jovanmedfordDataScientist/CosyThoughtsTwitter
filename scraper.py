@@ -27,7 +27,7 @@ class Quote:
         self._text = None
         self._author = None
         self.quote_block = quote_block
-        
+
     @property
     def text(self):   
         dirty_quote = self.quote_block.text
@@ -44,9 +44,17 @@ class Quote:
        return dirty_author.replace('\n','').strip(' ')
 
 
+def extract_quotes(filename):
+    soup = convert_html_to_soup(filename)
+    quote_blocks = soup.findAll(attrs={"class": "quoteText"})
+    for quote_block in quote_blocks:
+        quote = Quote(quote_block)
+        print(quote.text + "\n -" + quote.author + '\n\n')
 
-souped = convert_html_to_soup('goodreads_love.html')
+extract_quotes(r'CosyThoughts\goodreads_life.html')
+
 '''
+souped = convert_html_to_soup('goodreads_love.html')
 quote_block = souped.findAll(attrs={"class": "quoteText"})[0]
 quote = re.findall(r'“(.*?)”', quote_block.text)[0]
 dirty_author = quote_block.span.text
